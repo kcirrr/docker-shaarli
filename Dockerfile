@@ -44,7 +44,6 @@ RUN apk --no-cache add \
   php7-session=7.4.28-r0 \
   php7-xml=7.4.28-r0 \
   php7-simplexml=7.4.28-r0 \
-  php7-zlib=7.4.28-r0 \
   s6=2.11.0.0-r0
 
 COPY --from=docs /usr/src/app/shaarli/.docker/nginx.conf /etc/nginx/nginx.conf
