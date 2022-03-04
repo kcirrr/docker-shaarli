@@ -3,8 +3,8 @@
 # - Build documentation
 FROM python:3.10.2 AS docs
 WORKDIR /usr/src/app/shaarli
-RUN git clone --depth 1 https://github.com/shaarli/Shaarli.git /usr/src/app/shaarli
-RUN pip install --no-cache-dir --quiet mkdocs==1.2.3 \
+RUN git clone --depth 1 https://github.com/shaarli/Shaarli.git /usr/src/app/shaarli \
+  && pip install --no-cache-dir --quiet mkdocs==1.2.3 \
   && mkdocs build --clean
 
 # Stage 2:
