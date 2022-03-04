@@ -17,34 +17,35 @@ RUN composer --prefer-dist --no-dev install
 # Stage 3:
 # - Frontend dependencies
 FROM node:12-alpine AS node
-COPY --from=composer /app/shaarli shaarli
-RUN cd shaarli \
-    && yarn install \
-    && yarn run build \
-    && rm -rf node_modules
+WORKDIR /app/shaarli
+COPY --from=composer /app/shaarli /app/shaarli
+RUN yarn install \
+  && yarn cache clean \
+  && yarn run build \
+  && rm -rf node_modules
 
 # Stage 4:
 # - Shaarli image
 FROM alpine:3.15.0 AS runner
 
 RUN apk --no-cache add \
-  ca-certificates \
-  nginx \
-  php7 \
-  php7-ctype \
-  php7-curl \
-  php7-fpm \
-  php7-gd \
-  php7-iconv \
-  php7-intl \
-  php7-json \
-  php7-mbstring \
-  php7-openssl \
-  php7-session \
-  php7-xml \
-  php7-simplexml \
-  php7-zlib \
-  s6
+  ca-certificates=20211220-r0 \
+  nginx=1.20.2-r0 \
+  php7=7.4.28-r0 \
+  php7-ctype=7.4.28-r0 \
+  php7-curl=7.4.28-r0 \
+  php7-fpm=7.4.28-r0 \
+  php7-gd=7.4.28-r0 \
+  php7-iconv=7.4.28-r0 \
+  php7-intl=7.4.28-r0 \
+  php7-json=7.4.28-r0 \
+  php7-mbstring=7.4.28-r0 \
+  php7-openssl=7.4.28-r0 \
+  php7-session=7.4.28-r0 \
+  php7-xml=7.4.28-r0 \
+  php7-simplexml=7.4.28-r0 \
+  php7-zlib=7.4.28-r0 \
+  s6=2.11.0.0-r0
 
 COPY --from=docs /usr/src/app/shaarli/.docker/nginx.conf /etc/nginx/nginx.conf
 COPY --from=docs /usr/src/app/shaarli/.docker/php-fpm.conf /etc/php7/php-fpm.conf
