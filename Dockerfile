@@ -28,7 +28,8 @@ RUN yarn install \
 # - Shaarli image
 FROM alpine:3.15.1 AS runner
 
-RUN apk --no-cache add \
+RUN apk upgrade --no-cache libretls \
+  && apk --no-cache add \
   ca-certificates=20211220-r0 \
   nginx=1.20.2-r0 \
   php7=7.4.28-r0 \

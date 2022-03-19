@@ -1,4 +1,4 @@
-name: DockerA
+name: Docker
 
 on:
   push:
@@ -20,9 +20,9 @@ jobs:
         uses: actions/checkout@v3
       - 
         name: Lint
-        uses: brpaz/hadolint-action@v1.5.0
+        uses: hadolint/hadolint-action@v1.6.0
 
-  push:
+  build:
     needs: lint
     runs-on: ubuntu-latest
     steps:
@@ -68,6 +68,32 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Build and export to Docker
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          load: true
+          tags: 'ghcr.io/${{ github.repository }}:${{ github.sha }}'
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+      - 
+        name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'ghcr.io/${{ github.repository }}:${{ github.sha }}'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+      -
+        name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v1
+        if: always() 
+        with:
+          sarif_file: 'trivy-results.sarif'
       -
         name: Build and push
         uses: docker/build-push-action@v2
