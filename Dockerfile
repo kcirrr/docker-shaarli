@@ -26,7 +26,7 @@ RUN yarn install \
 
 # Stage 4:
 # - Shaarli image
-FROM alpine:3.15.1 AS runner
+FROM alpine:3.15.2 AS runner
 
 RUN apk upgrade --no-cache libretls \
   && apk --no-cache add \
