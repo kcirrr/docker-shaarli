@@ -4,7 +4,7 @@
 FROM python:3.10.4 AS docs
 WORKDIR /usr/src/app/shaarli
 RUN git clone --depth 1 https://github.com/shaarli/Shaarli.git /usr/src/app/shaarli \
-  && pip install --no-cache-dir --quiet mkdocs==1.2.3 \
+  && pip install --no-cache-dir --quiet mkdocs==1.2.3 jinja2==3.0.3 \
   && mkdocs build --clean
 
 # Stage 2:
