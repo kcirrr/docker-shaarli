@@ -26,7 +26,7 @@ RUN yarn install \
 
 # Stage 4:
 # - Shaarli image
-FROM alpine:3.15.3 AS runner
+FROM alpine:3.15.4 AS runner
 
 RUN apk add --no-cache \
   ca-certificates=20211220-r0 \
