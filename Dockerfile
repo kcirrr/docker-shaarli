@@ -16,7 +16,7 @@ RUN composer --prefer-dist --no-dev install
 
 # Stage 3:
 # - Frontend dependencies
-FROM node:12-alpine AS node
+FROM node:18-alpine AS node
 WORKDIR /shaarli
 COPY --from=composer /app/shaarli /shaarli
 RUN yarn install \
