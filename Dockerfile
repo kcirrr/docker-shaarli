@@ -9,7 +9,7 @@ RUN git clone --depth 1 https://github.com/shaarli/Shaarli.git /usr/src/app/shaa
 
 # Stage 2:
 # - Resolve PHP dependencies with Composer
-FROM composer:2.3 AS composer
+FROM composer:2.7 AS composer
 COPY --from=docs /usr/src/app/shaarli /app/shaarli
 WORKDIR /app/shaarli
 RUN composer --prefer-dist --no-dev install
